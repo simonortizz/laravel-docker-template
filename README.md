@@ -114,20 +114,20 @@ Password: root
 
 laravel-docker-template
 
-docker
- └ nginx
-     └ default.conf
+  docker
+      nginx
+        default.conf
 
-scripts
- └ deploy.sh
+  scripts
+      deploy.sh
 
-src
- └ laravel
+  src
+      laravel
 
-Dockerfile
-docker-compose.yml
-docker-compose.prod.yml
-README.md
+  Dockerfile
+  docker-compose.yml
+  docker-compose.prod.yml
+  README.md
 
 ---
 
