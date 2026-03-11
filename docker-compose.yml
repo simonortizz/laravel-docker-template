@@ -1,0 +1,12 @@
+services:
+
+  app:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: gym_php
+    working_dir: /var/www
+    volumes:
+      - ./src:/var/www
+    ports:
+      - "9000:9000"
