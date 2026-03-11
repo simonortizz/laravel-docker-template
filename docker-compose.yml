@@ -1,12 +1,56 @@
 services:
 
   app:
-    build:
-      context: .
-      dockerfile: docker/php/Dockerfile
-    container_name: gym_php
-    working_dir: /var/www
+    build: .
+    container_name: laravel_app
     volumes:
-      - ./src:/var/www
+      - ./src/laravel:/var/www
+    networks:
+      - laravel
+
+  nginx:
+    image: nginx:alpine
+    container_name: laravel_nginx
     ports:
-      - "9000:9000"
+      - "8080:80"
+    volumes:
+      - ./src/laravel:/var/www
+      - ./docker/nginx:/etc/nginx/conf.d
+    depends_on:
+      - app
+    networks:
+      - laravel
+
+  mysql:
+    image: mysql:8
+    container_name: laravel_mysql
+    environment:
+      MYSQL_DATABASE: laravel
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: laravel
+      MYSQL_PASSWORD: laravel
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - laravel
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: laravel_phpmyadmin
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: mysql
+    depends_on:
+      - mysql
+    networks:
+      - laravel
+
+volumes:
+  mysql_data:
+
+
+networks:
+  laravel:

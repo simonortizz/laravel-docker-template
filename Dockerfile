@@ -1,4 +1,4 @@
-FROM php:8.3-fpm
+FROM php:8.2-fpm
 
 RUN apt-get update && apt-get install -y \
     git \
@@ -9,7 +9,13 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libxml2-dev
 
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath
+RUN docker-php-ext-install \
+    pdo_mysql \
+    mbstring \
+    exif \
+    pcntl \
+    bcmath \
+    gd
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
