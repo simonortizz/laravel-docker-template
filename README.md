@@ -114,15 +114,20 @@ Password: root
 
 laravel-docker-template
 
-docker/
-nginx/
-default.conf
+docker
+ └ nginx
+     └ default.conf
 
-src/
-laravel/
+scripts
+ └ deploy.sh
+
+src
+ └ laravel
 
 Dockerfile
 docker-compose.yml
+docker-compose.prod.yml
+README.md
 
 ---
 
@@ -146,8 +151,50 @@ Entrar al contenedor:
 
 ---
 
+# Scripts del proyecto
+
+La carpeta scripts/ contiene comandos automatizados para tareas comunes del proyecto.
+
+Ejemplo:
+
+scripts/
+ └ deploy.sh
+
+Este script permite ejecutar un deploy completo automáticamente sin tener que escribir múltiples comandos manualmente.
+
+Ejecutar:
+  ./scripts/deploy.sh
+Esto realizará:
+  actualizar código desde git
+  reconstruir contenedores
+  ejecutar migraciones
+  limpiar cache de Laravel
+
+Los scripts ayudan a estandarizar procesos y evitar errores manuales, especialmente en entornos de producción.
+
+Deploy en servidor
+
+Para desplegar el proyecto en un servidor (VPS):
+Clonar el repositorio
+  git clone repo
+  cd proyecto
+Crear archivo .env
+  cp src/laravel/.env.example src/laravel/.env
+Generar key
+  docker compose -f docker-compose.prod.yml run --rm app php artisan key:generate
+Levantar contenedores
+  docker compose -f docker-compose.prod.yml up -d --build
+Ejecutar migraciones
+  docker compose -f docker-compose.prod.yml exec app php artisan migrate
+
+---
+
 # Objetivo del template
 
-Este template permite iniciar nuevos proyectos Laravel con un entorno Docker listo para desarrollo y despliegue, evitando repetir configuraciones en cada proyecto.
+Este template permite iniciar nuevos proyectos Laravel con un entorno Docker listo para:
+  desarrollo local
+  despliegue en servidores
 
-Cada nuevo proyecto puede enfocarse únicamente en desarrollar la lógica de la aplicación (controladores, modelos, migraciones, rutas, etc.).
+  proyectos reutilizables
+
+De esta forma, cada nuevo proyecto puede enfocarse únicamente en desarrollar la lógica de la aplicación (controladores, modelos, migraciones, rutas, lógica de negocio) sin tener que repetir configuraciones de infraestructura.
