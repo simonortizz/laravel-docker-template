@@ -17,6 +17,8 @@ RUN docker-php-ext-install \
     bcmath \
     gd
 
+RUN echo "date.timezone=America/Argentina/Buenos_Aires" >> /usr/local/etc/php/php.ini
+
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www
